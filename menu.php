@@ -93,6 +93,36 @@
         <div class="col text-center py-2">
          <h2 class="text-center mb-2">
          <?php 
+         
+         if(!empty($_REQUEST['commentSend']) && $_REQUEST['commentSend'] == "true"){
+          if(isset($_POST['send'])){
+            if(!empty($_POST['fullName']) && !empty($_POST['email'])){
+              $fullName = $_POST['fullName'];
+                $email = $_POST['email'];
+                $comment = $_POST['commentText'];
+                $commentDate = date("Y-m-d H:m:s");
+              try{
+                   $insert = "INSERT INTO comments
+                   (fullName, email, commentText, commentDate)
+                   VALUES (?, ?, ?, ?)";
+                   $insertStmnt = $pdoObj->prepare($insert);
+                  $insertStmnt->execute([$fullName,$email,$comment,$commentDate]);
+              echo "<div class=\"text-center text-success\">";
+              echo "پیام به پشتیبانی با موفقیت ارسال شد";
+              echo "</div>";
+              }catch(PDOException $e){
+                echo "<div class=\"text-center text-danger\">";
+                    echo "Error: " . $e->getMessage();
+                echo "</div>";
+                  }
+            }else{
+              echo "<div class=\"text-center text-danger\">";
+              echo "نام کاربری و ایمیل وارد نشده است";
+              echo "</div>";
+            }
+          }
+        }
+        
          $category = $_REQUEST['category'];
          switch($category){
            case 1:{$str = "نوشیدنی های گرم"; break;}          
@@ -208,37 +238,31 @@
 
   <footer class="bg-dark p-4">
     <div class="container-fluid text-muted">
-
       <div class="row">
-
         <div class="col-md-10">
           <p>
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است.
+            تمامی حقوق مربوط به این وبسایت و محتوای آن مربوط به کافی شاپ بالی میباشد.  
+			<font class="text-info">
+            cafebali.ir &copy; 2021
+            </font>
           </p>
         </div>
 
         <div class="col-md-2 text-left">
           <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#supportModal">
-            پشتیبانی
+            ارتباط با پشتیبانی سایت
           </button>
         </div>
-
       </div>
-
     </div>
-
   </footer>
 
 
 
   <!-- Support Modal -->
   <div class="modal fade text-muted" id="supportModal">
-
     <div class="modal-dialog">
-
       <div class="modal-content">
-
         <div class="modal-header">
           <h5 class="modal-title"> ارسال پیام به پشتیبان</h5>
           <button class="close ml-0" data-dismiss="modal">
@@ -247,34 +271,34 @@
         </div>
 
         <div class="modal-body">
-
-          <form action="#">
+        <?php
+        if(!empty($_REQUEST['id'])){
+          $userID = $_REQUEST['id'];
+          echo "<form action=\"menu.php?id=$userID&category=1&commentSend=true\" method=\"post\">";
+        }else{
+          echo "<form action=\"menu.php?category=1&commentSend=true\" method=\"post\">";
+        }
+          ?>
             <div class="form-group">
               <label for="name">نام</label>
-              <input type="text" id="name" class="form-control">
+              <input type="text" id="name" name="fullName" class="form-control">
             </div>
             <div class="form-group">
               <label for="email">ایمیل</label>
-              <input type="text" id="email" class="form-control">
+              <input type="email" id="email"  name="email" class="form-control">
             </div>
             <div class="form-group">
               <label for="message">متن پیام</label>
-              <textarea type="text" id="message" class="form-control"></textarea>
+              <textarea type="text" id="message" name="commentText" class="form-control"></textarea>
+            </div>
+			<div class="modal-footer">
+          <button type="submit" name="send" class="btn btn-outline-info btn-block " >ارسال</button>
             </div>
           </form>
-
         </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-outline-info btn-block">ارسال</button>
-        </div>
-
       </div>
-
     </div>
-
   </div>
-
 
 
 

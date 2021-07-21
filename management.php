@@ -202,7 +202,7 @@
                       
                        echo "<tbody>";
                        $i=0;
-                       $sum=0;
+                       $sum = 0;
                        foreach($selectResult as $row){
                          $i++;
                          echo "<tr>";
@@ -214,7 +214,7 @@
                          echo "<td>" .$row['cartDate'] ."</td>";
                          echo "<td>" ."<img style=\" width:75px; height: 75px;\" src=\"" .$row['imageName'] ."\"alt=\"image\">" ."</td>";
                            echo "</tr>";
-						          $sum += $row['price'];
+						 $sum += $row['price'];
                        }
                        echo "</tbody>";
                        echo "</table>";

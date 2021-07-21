@@ -118,6 +118,7 @@
     $count = $selectResult->rowCount();
 
   echo "<tbody>";
+  $sum=0;
    foreach($selectResult as $row){
     $id = $row['cartID'];
     echo "<tr>"
